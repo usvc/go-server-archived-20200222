@@ -60,6 +60,15 @@ The above generates two sets of certificates/keys. Next, create symlinks of one 
 make tls
 ```
 
+## Continuous Integration Pipeline
+
+### Variables
+
+| Key | Description |
+| --- | --- |
+| GITHUB_SSH_DEPLOY_KEY | Create a deploy key for your repository (generate one with `make ssh.keys`, copy contents of `./bin/_id_rsa.pub` into your repository's Deploy Keys and use contents of `./bin/_id_rsa_b64` as the value of this variable) |
+| GITHUB_REPOSITORY_URL | Get this from your repository's clone address |
+
 # License
 This project is licensed under the MIT license.
 

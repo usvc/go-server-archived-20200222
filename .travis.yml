@@ -1,0 +1,33 @@
+sudo: required
+language: go
+go:
+  - "1.11.x"
+services:
+- docker
+stages:
+- test
+git:
+  submodules: false
+  quiet: false
+before_script:
+  - touch ~/.ssh/id_rsa
+  - |
+    if [ "${GITHUB_SSH_DEPLOY_KEY}" != "" ]; then
+      printf -- "${GITHUB_SSH_DEPLOY_KEY}" | base64 -d >> ~/.ssh/id_rsa;
+      chmod 600 ~/.ssh/id_rsa;
+      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts;
+    fi;
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build -d
+jobs:
+  include:
+  - stage: test
+    script:
+    - make deps
+    - make secrets
+    - make tls
+    - make test
+  - stage: release
+    script:
+    - make release.github GITHUB_REPOSITORY_URL=${GITHUB_REPOSITORY_URL}

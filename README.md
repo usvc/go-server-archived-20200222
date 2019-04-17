@@ -16,9 +16,9 @@ func main() {
   config := server.NewConfigFromEnvironment()
   server := server.NewServer(config)
   handler := http.NewServeMux()
-	handler.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello world"))
-	})
+  handler.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte("hello world"))
+  })
   server.StartWithHandler(handler)
 }
 

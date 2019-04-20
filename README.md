@@ -5,7 +5,7 @@
 Include it in your code:
 
 ```go
-package main
+package server
 
 import (
   "net/http"

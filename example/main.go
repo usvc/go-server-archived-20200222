@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
+
+	. "github.com/usvc/go-server"
 )
 
 func main() {

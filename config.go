@@ -40,6 +40,9 @@ const DefaultTLSCertificatePath = "tls/server.crt"
 // DefaultTLSKeyPath defines the default relative path to the certificate key
 const DefaultTLSKeyPath = "tls/server.key"
 
+// NewConfigFromEnvironment is a convenience function for reading the configuration
+// values from the environment. Specify an :environmentPrefix to add an underscore
+// delimited string to the front of the prescribed variable names
 func NewConfigFromEnvironment(environmentPrefix ...string) *Config {
 	helper := viper.New()
 	if len(environmentPrefix) > 0 {
@@ -61,6 +64,26 @@ func NewConfigFromEnvironment(environmentPrefix ...string) *Config {
 	}
 }
 
+// NewConfig is for returning a new configuration struct with values set to
+// the default values
+func NewConfig() *Config {
+	return &Config{
+		Host:                    DefaultHost,
+		LivenessCheckInterval:   DefaultLivenessCheckInterval,
+		LivenessCheckMethod:     DefaultLivenessCheckMethod,
+		LivenessCheckPath:       DefaultLivenessCheckPath,
+		LivenessCheckStatusCode: DefaultLivenessCheckStatusCode,
+		LivenessCheckTimeout:    DefaultLivenessCheckTimeout,
+		MaxHeaderBytes:          DefaultMaxHeaderBytes,
+		Port:                    DefaultPort,
+		TimeoutIdle:             DefaultTimeout,
+		TimeoutRead:             DefaultTimeout,
+		TLSCertificatePath:      DefaultTLSCertificatePath,
+		TLSKeyPath:              DefaultTLSKeyPath,
+	}
+}
+
+// Config is a struct for holding configuration for the Server struct initialisation
 type Config struct {
 	Host                    string
 	LivenessCheckPath       string

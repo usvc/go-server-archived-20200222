@@ -56,3 +56,55 @@ func (s *ConfigKeyTestSuite) TestGetString() {
 	}
 	assert.Equal(s.T(), "some string", environmentKey.GetString())
 }
+
+func (s *ConfigKeyTestSuite) TestHasValidTLS_valid() {
+	config := &Config{
+		TLSCertificatePath: "secrets/tls.crt",
+		TLSKeyPath:         "secrets/tls.key",
+	}
+	assert.Equal(s.T(), true, config.HasValidTLS())
+}
+
+func (s *ConfigKeyTestSuite) TestHasValidTLS_noExists() {
+	config := &Config{
+		TLSCertificatePath: "secrets/tls3.crt",
+		TLSKeyPath:         "secrets/tls.key",
+	}
+	assert.Equal(s.T(), false, config.HasValidTLS())
+	config = &Config{
+		TLSCertificatePath: "secrets/tls.crt",
+		TLSKeyPath:         "secrets/tls3.key",
+	}
+	assert.Equal(s.T(), false, config.HasValidTLS())
+}
+
+func (s *ConfigKeyTestSuite) TestHasValidTLS_mismatch() {
+	config := &Config{
+		TLSCertificatePath: "secrets/tls.crt",
+		TLSKeyPath:         "secrets/tls2.key",
+	}
+	assert.Equal(s.T(), false, config.HasValidTLS())
+	config = &Config{
+		TLSCertificatePath: "secrets/tls2.crt",
+		TLSKeyPath:         "secrets/tls.key",
+	}
+	assert.Equal(s.T(), false, config.HasValidTLS())
+}
+
+func (s *ConfigKeyTestSuite) TestHasValidTLS_undefined() {
+	config := &Config{
+		TLSCertificatePath: "",
+		TLSKeyPath:         "",
+	}
+	assert.Equal(s.T(), false, config.HasValidTLS())
+	config = &Config{
+		TLSCertificatePath: "secrets/tls.crt",
+		TLSKeyPath:         "",
+	}
+	assert.Equal(s.T(), false, config.HasValidTLS())
+	config = &Config{
+		TLSCertificatePath: "",
+		TLSKeyPath:         "secrets/tls.key",
+	}
+	assert.Equal(s.T(), false, config.HasValidTLS())
+}
